@@ -50,7 +50,7 @@ A header view allow for a large icon, title, and subtitle. Also has interpolatin
 * **bundle**
 	- Bundle that will be used to retreive the icon if the `LDHeaderOptionIconFileName` is set in the **options**.
 * **options**
-	- Dictionary of strings and corresponding values containg options used for the header. A list of [LDHeaderOptionKeys]() can be found below.
+	- Dictionary of strings and corresponding values containg options used for the header. A list of [LDHeaderOptionKeys](https://github.com/LacertosusRepo/libDeusPrefs/blob/main/README.md#ldheaderoptionkeys) can be found below.
 
 ### Usage:
 ```objc
