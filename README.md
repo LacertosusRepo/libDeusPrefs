@@ -1,4 +1,56 @@
-# LDAnimatedTitleView
+# Cells
+<details>
+	<summary>LDInputSegmentTableCell</summary>
+
+### Description:
+Segment cell allowing users to input a custom value. Generally used for inputting custom integers.
+
+### Usage:
+```xml
+<dict>
+		<key>cell</key>
+		<string>PSSegmentCell</string>
+		<key>cellClass</key>
+		<string>LDInputSegmentTableCell</string>
+		<key>inputTitle</key>
+		<string>Input alert title</string>
+		<key>inputMessage</string>
+		<string>Message to be displayed in the input alert./string>
+		<key>defaults</key>
+		<string>com.company.tweak</string>
+		<key>key</key>
+		<string>key</string>
+		<key>default</key>
+		<string>2</string>
+		<key>validTitles</key>
+		<array>
+			<string>One</string>
+			<string>Two</string>
+		</array>
+		<key>validValues</key>
+		<array>
+			<integer>1</integer>
+			<integer>2</integer>
+		</array>
+		<key>PostNotification</key>
+		<string>com.company.tweak/ReloadPrefs</string>
+</dict>
+```
+
+### Keys:
+| Key | Type | Description | Default |
+| --- | :--: | ----------- | :-----: |
+| inputTitle | _string_ | Title for the input alert view. | If `nil`, the label for the segment cell is used |
+| inputMessage | _string_ | Message for the input alert view. | "No input message provided for this cell." |
+
+---
+</details>
+
+# Views
+
+<details>
+	<summary>LDAnimatedTitleView</summary>
+	
 ### Description:
 A animated title in the navigation bar that slides up when the user has scrolled down.
 
@@ -19,7 +71,7 @@ A animated title in the navigation bar that slides up when the user has scrolled
 ```objc
 -(void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	
+
 	if(!self.navigationItem.titleView) {
 		LDAnimatedTitleView *animatedTitleView = [[LDAnimatedTitleView alloc] initWithTitle:@"Flashlight Indicator" textColor:[UIColor cyanColor] minimumScrollOffsetRequired:20];
 		self.navigationItem.titleView = animatedTitleView;
@@ -33,7 +85,12 @@ A animated title in the navigation bar that slides up when the user has scrolled
 }
 ```
 
-# LDHeaderView
+---
+</details>
+
+<details>
+	<summary>LDHeaderView</summary>
+	
 ### Description:
 A header view allow for a large icon, title, and subtitle. Also has interpolating motion and blurred background options.
 
@@ -69,8 +126,11 @@ A header view allow for a large icon, title, and subtitle. Also has interpolatin
 ### LDHeaderOptionKeys:
 | Key | Type | Description | Default |
 | --- | :--: | ----------- | :-----: |
-| LDHeaderOptionIconFileName | string | Name of the large icon file (should be 225 x 225px), ignore if no icon is wanted | nil |
-| LDHeaderOptionTitleFontSize | float | Font size of the title. | 35 |
-| LDHeaderOptionSubtitleFontSize | float | Font size of the subtitles | 13 |
-| LDHeaderOptionAddInterpolatingMotion | bool | Adds slight interpolating motion when the device is moved | NO |
-| LDHeaderOptionAddMaterialBackground | bool | Adds a blurred background to header, also using the user's wallpaper. | NO |
+| LDHeaderOptionIconFileName | _string_ | Name of the large icon file (should be 225 x 225px), ignore if no icon is wanted | nil |
+| LDHeaderOptionTitleFontSize | _float_ | Font size of the title. | 35 |
+| LDHeaderOptionSubtitleFontSize | _float_ | Font size of the subtitles | 13 |
+| LDHeaderOptionAddInterpolatingMotion | _bool_ | Adds slight interpolating motion when the device is moved | NO |
+| LDHeaderOptionAddMaterialBackground | _bool_ | Adds a blurred background to header, also using the user's wallpaper. | NO |
+
+---
+</details>
