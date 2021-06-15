@@ -8,32 +8,32 @@ Segment cell allowing users to input a custom value. Generally used for inputtin
 ### Usage:
 ```xml
 <dict>
-		<key>cell</key>
-		<string>PSSegmentCell</string>
-		<key>cellClass</key>
-		<string>LDInputSegmentTableCell</string>
-		<key>inputTitle</key>
-		<string>Input alert title</string>
-		<key>inputMessage</string>
-		<string>Message to be displayed in the input alert./string>
-		<key>defaults</key>
-		<string>com.company.tweak</string>
-		<key>key</key>
-		<string>key</string>
-		<key>default</key>
-		<string>2</string>
-		<key>validTitles</key>
-		<array>
-			<string>One</string>
-			<string>Two</string>
-		</array>
-		<key>validValues</key>
-		<array>
-			<integer>1</integer>
-			<integer>2</integer>
-		</array>
-		<key>PostNotification</key>
-		<string>com.company.tweak/ReloadPrefs</string>
+	<key>cell</key>
+	<string>PSSegmentCell</string>
+	<key>cellClass</key>
+	<string>LDInputSegmentTableCell</string>
+	<key>inputTitle</key>
+	<string>Input Alert Title</string>
+	<key>inputMessage</string>
+	<string>Message to be displayed in the input alert./string>
+	<key>defaults</key>
+	<string>com.company.tweak</string>
+	<key>key</key>
+	<string>key</string>
+	<key>default</key>
+	<string>2</string>
+	<key>validTitles</key>
+	<array>
+		<string>One Option</string>
+		<string>Two Option</string>
+	</array>
+	<key>validValues</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>PostNotification</key>
+	<string>com.company.tweak/ReloadPrefs</string>
 </dict>
 ```
 
@@ -42,10 +42,170 @@ Segment cell allowing users to input a custom value. Generally used for inputtin
 | --- | :--: | ----------- | :-----: |
 | inputTitle | _string_ | Title for the input alert view. | If `nil`, the label for the segment cell is used |
 | inputMessage | _string_ | Message for the input alert view. | "No input message provided for this cell." |
+| localizationTable | _string_ | Name of localization table to lookup localization key. | n/a |
 
 ---
 </details>
 
+<details>
+	<summary>LDLabeledSegmentTableCell</summary>
+
+### Description:
+Segment cell with label centered above it.
+
+### Usage:
+```xml
+<dict>
+	<key>cell</key>
+	<string>PSSegmentCell</string>
+	<key>cellClass</key>
+	<string>LDLabeledSegmentTableCell</string>
+	<key>defaults</key>
+	<string>com.company.tweak</string>
+	<key>key</key>
+	<string>key</string>
+	<key>label</key>
+	<string>Segment Label</string>
+	<key>default</key>
+	<string>0</string>
+	<key>validTitles</key>
+	<array>
+		<string>One Option</string>
+		<string>Two Option</string>
+	</array>
+	<key>validValues</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>PostNotification</key>
+	<string>com.company.tweak/ReloadPrefs</string>
+</dict>
+```
+
+### Keys:
+| Key | Type | Description | Default |
+| --- | :--: | ----------- | :-----: |
+| label | _string_ | String to be displayed above the segment cell. | n/a |
+| localizationTable | _string_ | Name of localization table to lookup localization key. | n/a |
+
+---
+</details>
+
+<details>
+	<summary>LDLabeledSliderCell</summary>
+
+### Description:
+Slider cell with a label centered above it. A value can be manually input by tapping the displayed value.
+
+### Usage:
+```xml
+<dict>
+	<key>cell</key>
+	<string>PSSliderCell</string>
+	<key>cellClass</key>
+	<string>LDLabeledSliderCell</string>
+	<key>defaults</key>
+	<string>com.company.tweak</string>
+	<key>key</key>
+	<string>fontSize</string>
+	<key>label</key>
+	<string>Slider Label</string>
+	<key>default</key>
+	<string>5</string>
+	<key>min</key>
+	<string>0</string>
+	<key>max</key>
+	<string>10</string>
+	<key>PostNotification</key>
+	<string>com.company.tweak/ReloadPrefs</string>
+</dict>
+```
+
+### Keys:
+| Key | Type | Description | Default |
+| --- | :--: | ----------- | :-----: |
+| label | _string_ | String to be displayed above the slider cell. | If `nil`, the label for the segment cell is used. |
+| localizationTable | _string_ | Name of localization table to lookup localization key. | n/a |
+
+---
+</details>
+
+<details>
+	<summary>LDSwitchWithInfoCell</summary>
+
+### Description:
+Switch cell with an info button next to the switch allow you to communicate more info to the user.
+
+### Usage:
+```xml
+<dict>
+	<key>cell</key>
+	<string>PSSwitchCell</string>
+	<key>cellClass</key>
+	<string>LDSwitchWithInfoCell</string>
+	<key>infoTitle</key>
+	<string>Info Alert Title</string>
+	<key>infoMessage</key>
+	<string>Message to be displayed in the info alert..</string>
+	<key>defaults</key>
+	<string>com.company.tweak</string>
+	<key>key</key>
+	<string>key</string>
+	<key>label</key>
+	<string>Switch Label</string>
+	<key>default</key>
+	<false/>
+	<key>PostNotification</key>
+	<string>com.company.tweak/ReloadPrefs</string>
+</dict>
+```
+
+### Keys:
+| Key | Type | Description | Default |
+| --- | :--: | ----------- | :-----: |
+| infoTitle | _string_ | Title for the info alert view. | If `nil`, the label property is used. |
+| infoMessage | _string_ | Message for the info alert view. | "No information provided for this cell." |
+| localizationTable | _string_ | Name of localization table to lookup localization key. | n/a |
+
+---
+</details>
+	
+<details>
+	<summary>LDTimeIntervalPickerCell</summary>
+
+### Description:
+Cell allowing the user to select a time interval in hours, minutes, and seconds. The value is saved in seconds.
+
+### Usage:
+```xml
+<dict>
+	<key>cell</key>
+	<string>PSButtonCell</string>
+	<key>cellClass</key>
+	<string>LDTimeIntervalPickerCell</string>
+	<key>defaults</key>
+	<string>com.company.tweak</string>
+	<key>key</key>
+	<string>key</string>
+	<key>label</key>
+	<string>Set Time Interval</string>
+	<key>default</key>
+	<integer>120</integer>
+	<key>PostNotification</key>
+	<string>com.company.tweak/ReloadPrefs</string>
+</dict>
+```
+
+### Keys:
+| Key | Type | Description | Default |
+| --- | :--: | ----------- | :-----: |
+| label | _string_ | String displayed above the time picker. | n/a |
+| default | _integer_ | Default time should be in seconds. | n/a |
+
+---
+</details>
+	
 # Views
 
 <details>
