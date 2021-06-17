@@ -1,3 +1,9 @@
+#! Declaration
+```objc
+@interface LDLabeledSliderCell : PSSliderTableCell
+@end
+```
+
 #! Example Usage
 ```xml
 <dict>

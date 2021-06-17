@@ -1,3 +1,9 @@
+#! Declaration
+```objc
+@interface LDSwitchWithInfoCell : PSSwitchTableCell
+@end
+```
+
 #! Example Usage
 ```xml
 <dict>

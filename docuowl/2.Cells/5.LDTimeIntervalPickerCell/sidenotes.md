@@ -1,3 +1,9 @@
+#! Declaration
+```objc
+@interface LDTimeIntervalPickerCell : PSTableCell
+@end
+```
+
 #! Example Usage
 ```xml
 <dict>

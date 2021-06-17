@@ -1,3 +1,9 @@
+#! Declaration
+```objc
+@interface LDLabeledSegmentTableCell : PSSegmentTableCell
+@end
+```
+
 #! Example Usage
 ```xml
 <dict>

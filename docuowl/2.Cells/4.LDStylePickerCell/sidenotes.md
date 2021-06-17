@@ -1,3 +1,9 @@
+#! Declaration
+```objc
+@interface LDStylePickerCell : PSTableCell
+@end
+```
+
 #! Example Usage
 ```xml
 <dict>
