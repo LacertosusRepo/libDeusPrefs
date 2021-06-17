@@ -1,0 +1,2 @@
+@interface LDLabeledSliderCell : PSSliderTableCell
+@end

@@ -1,0 +1,2 @@
+@interface LDSwitchWithInfoCell : PSSwitchTableCell
+@end
