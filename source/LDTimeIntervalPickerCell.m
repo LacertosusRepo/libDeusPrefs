@@ -33,24 +33,6 @@
     }
   }
 
-    //Use tint color from Cephei
-    //https://github.com/hbang/libcephei/blob/master/prefs/HBTintedTableCell.m
-  -(void)tintColorDidChange {
-    [super tintColorDidChange];
-
-    self.textLabel.textColor = self.tintColor;
-    self.textLabel.highlightedTextColor = self.tintColor;
-  }
-
-  -(void)refreshCellContentsWithSpecifier:(PSSpecifier *)specifier {
-    [super refreshCellContentsWithSpecifier:specifier];
-
-    if([self respondsToSelector:@selector(tintColor)]) {
-      self.textLabel.textColor = self.tintColor;
-      self.textLabel.highlightedTextColor = self.tintColor;
-	  }
-  }
-
   -(void)presentAlert {
     NSString *title = [self.specifier propertyForKey:@"label"];
 
@@ -133,5 +115,23 @@
 
   -(CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component {
     return 30;
+  }
+
+    //Use tint color from Cephei
+    //https://github.com/hbang/libcephei/blob/master/prefs/HBTintedTableCell.m
+  -(void)tintColorDidChange {
+    [super tintColorDidChange];
+
+    self.textLabel.textColor = self.tintColor;
+    self.textLabel.highlightedTextColor = self.tintColor;
+  }
+
+  -(void)refreshCellContentsWithSpecifier:(PSSpecifier *)specifier {
+    [super refreshCellContentsWithSpecifier:specifier];
+
+    if([self respondsToSelector:@selector(tintColor)]) {
+      self.textLabel.textColor = self.tintColor;
+      self.textLabel.highlightedTextColor = self.tintColor;
+    }
   }
 @end

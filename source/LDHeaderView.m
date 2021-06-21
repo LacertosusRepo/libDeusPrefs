@@ -11,6 +11,7 @@
 	NSString *const LDHeaderOptionSubtitleFontColor = @"LDHeaderOptionSubtitleFontColor";
 	NSString *const LDHeaderOptionAddInterpolatingMotion = @"LDHeaderOptionAddInterpolatingMotion";
 	NSString *const LDHeaderOptionAddMaterialBackground = @"LDHeaderOptionAddMaterialBackground";
+	NSString *const LDHeaderOptionBackgroundImageFileName = @"LDHeaderOptionBackgroundImageFileName";
 
 	extern CFArrayRef CPBitmapCreateImagesFromData(CFDataRef cpbitmap, void*, int, void*);
 
@@ -85,50 +86,57 @@
 				[self addInterpolatingMotionToView];
 			}
 
+				//Add blurred material view with image if applicable
 			BOOL addMaterialBackground = [options[LDHeaderOptionAddMaterialBackground] boolValue] ?: NO;
 			if(addMaterialBackground) {
-				NSData *wallpaperData = [NSData dataWithContentsOfFile:@"/User/Library/SpringBoard/OriginalLockBackground.cpbitmap"];
-				UIImage *wallpaper;
-				if(wallpaperData) {
-					CFArrayRef wallpaperArrayRef = CPBitmapCreateImagesFromData((__bridge CFDataRef)wallpaperData, NULL, 1, NULL);
-					NSArray *wallpaperArray = (__bridge NSArray *)wallpaperArrayRef;
-					wallpaper = [[UIImage alloc] initWithCGImage:(__bridge CGImageRef)(wallpaperArray[0])];
-					CFRelease(wallpaperArrayRef);
-				}
-
-					//Add wallpaper
-				UIImageView *wallpaperView = [[UIImageView alloc] initWithImage:wallpaper];
-				wallpaperView.contentMode = UIViewContentModeScaleAspectFill;
-				wallpaperView.clipsToBounds = YES;
-				wallpaperView.layer.cornerRadius = 10;
-				wallpaperView.translatesAutoresizingMaskIntoConstraints = NO;
-				[wallpaperView setContentCompressionResistancePriority:0 forAxis:UILayoutConstraintAxisHorizontal];
-				[wallpaperView setContentCompressionResistancePriority:0 forAxis:UILayoutConstraintAxisVertical];
-				[self insertSubview:wallpaperView atIndex:0];
-
-					//Create blur
-				MTMaterialView *blurView;
+				MTMaterialView *materialView;
 				if([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){13, 0, 0}]) {
-					blurView = [objc_getClass("MTMaterialView") materialViewWithRecipe:1 configuration:1 initialWeighting:1];
-		      blurView.recipeDynamic = YES;
-		      [blurView setRecipeName:@"plattersDark"];
+					materialView = [objc_getClass("MTMaterialView") materialViewWithRecipe:1 configuration:1 initialWeighting:1];
+		      materialView.recipeDynamic = YES;
+		      [materialView setRecipeName:@"plattersDark"];
 				} else {
-					blurView = [objc_getClass("MTMaterialView") materialViewWithRecipe:MTMaterialRecipeNotifications options:MTMaterialOptionsBlur];
-					blurView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
+					materialView = [objc_getClass("MTMaterialView") materialViewWithRecipe:MTMaterialRecipeNotifications options:MTMaterialOptionsBlur];
+					materialView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.7];
 				}
-				blurView.translatesAutoresizingMaskIntoConstraints = NO;
-				[wallpaperView addSubview:blurView];
+				materialView.clipsToBounds = YES;
+				materialView.layer.cornerRadius = 10;
+				materialView.translatesAutoresizingMaskIntoConstraints = NO;
+				[self insertSubview:materialView atIndex:0];
+
+				UIImage *materialBackgroundImage;
+				NSString *materialBackgroundImageString = options[LDHeaderOptionBackgroundImageFileName] ?: nil;
+				if([materialBackgroundImageString isEqualToString:@"DeviceWallpaper"]) {
+					NSData *wallpaperData = [NSData dataWithContentsOfFile:@"/User/Library/SpringBoard/OriginalLockBackground.cpbitmap"];
+					if(wallpaperData) {
+						CFArrayRef wallpaperArrayRef = CPBitmapCreateImagesFromData((__bridge CFDataRef)wallpaperData, NULL, 1, NULL);
+						NSArray *wallpaperArray = (__bridge NSArray *)wallpaperArrayRef;
+						materialBackgroundImage = [[UIImage alloc] initWithCGImage:(__bridge CGImageRef)(wallpaperArray[0])];
+						CFRelease(wallpaperArrayRef);
+					}
+
+				} else if(materialBackgroundImageString != nil) {
+					materialBackgroundImage = [UIImage imageNamed:materialBackgroundImageString inBundle:bundle compatibleWithTraitCollection:nil];
+				}
+
+				UIImageView *materialBackgroundImageView = [[UIImageView alloc] initWithImage:materialBackgroundImage];
+				materialBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+				materialBackgroundImageView.clipsToBounds = YES;
+				materialBackgroundImageView.layer.cornerRadius = 10;
+				materialBackgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+				[materialBackgroundImageView setContentCompressionResistancePriority:0 forAxis:UILayoutConstraintAxisHorizontal];
+				[materialBackgroundImageView setContentCompressionResistancePriority:0 forAxis:UILayoutConstraintAxisVertical];
+				[self insertSubview:materialBackgroundImageView atIndex:0];
 
 				[NSLayoutConstraint activateConstraints:@[
-					[wallpaperView.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor constant:50],
-					[wallpaperView.heightAnchor constraintEqualToAnchor:_stackView.heightAnchor constant:20],
-					[wallpaperView.centerXAnchor constraintEqualToAnchor:_stackView.centerXAnchor],
-					[wallpaperView.centerYAnchor constraintEqualToAnchor:_stackView.centerYAnchor],
+					[materialBackgroundImageView.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor constant:50],
+					[materialBackgroundImageView.heightAnchor constraintEqualToAnchor:_stackView.heightAnchor constant:20],
+					[materialBackgroundImageView.centerXAnchor constraintEqualToAnchor:_stackView.centerXAnchor],
+					[materialBackgroundImageView.centerYAnchor constraintEqualToAnchor:_stackView.centerYAnchor],
 
-					[blurView.widthAnchor constraintEqualToAnchor:wallpaperView.widthAnchor],
-					[blurView.heightAnchor constraintEqualToAnchor:wallpaperView.heightAnchor],
-					[blurView.centerXAnchor constraintEqualToAnchor:wallpaperView.centerXAnchor],
-					[blurView.centerYAnchor constraintEqualToAnchor:wallpaperView.centerYAnchor],
+					[materialView.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor constant:50],
+					[materialView.heightAnchor constraintEqualToAnchor:_stackView.heightAnchor constant:20],
+					[materialView.centerXAnchor constraintEqualToAnchor:_stackView.centerXAnchor],
+					[materialView.centerYAnchor constraintEqualToAnchor:_stackView.centerYAnchor],
 				]];
 			}
 		}

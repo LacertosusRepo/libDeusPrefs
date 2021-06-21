@@ -27,22 +27,12 @@
     return self;
   }
 
-  -(void)didMoveToWindow {
-    [super didMoveToWindow];
-
-    if(![_segmentValues containsObject:[self.specifier performGetter]]) {
-      ((UISegmentControl *)self.control).selectedSegmentIndex = UISegmentedControlNoSegment;
-      _inputButton.selected = YES;
-      [self animateInputButton:YES];
-    }
-  }
-
   -(void)inputButtonTapped {
     NSString *inputTitle = ([self.specifier propertyForKey:@"inputTitle"]) ?: [self.specifier propertyForKey:@"label"];
     NSString *inputMessage = [self.specifier propertyForKey:@"inputMessage"] ?: @"No input message provided for this cell.";
 
     NSBundle *bundle = [self.specifier.target bundle];
-    NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
+    NSString *localizationTable = [self.specifier propertyForKey:@"localizationTable"];
     NSString *localizedTitle = [bundle localizedStringForKey:inputTitle value:inputTitle table:localizationTable];
     NSString *localizedMessage = [bundle localizedStringForKey:inputMessage value:inputMessage table:localizationTable];
 
@@ -81,6 +71,16 @@
     if(_inputButton.selected) {
       _inputButton.selected = NO;
       [self animateInputButton:NO];
+    }
+  }
+
+  -(void)didMoveToWindow {
+    [super didMoveToWindow];
+
+    if(![_segmentValues containsObject:[self.specifier performGetter]]) {
+      ((UISegmentControl *)self.control).selectedSegmentIndex = UISegmentedControlNoSegment;
+      _inputButton.selected = YES;
+      [self animateInputButton:YES];
     }
   }
 

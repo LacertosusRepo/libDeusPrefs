@@ -26,12 +26,15 @@
   }
 
   -(IBAction)infoButtonTapped {
-    NSBundle *bundle = [self.specifier.target bundle];
     NSString *title = ([self.specifier propertyForKey:@"infoTitle"]) ?: [self.specifier propertyForKey:@"label"];
     NSString *message = ([self.specifier propertyForKey:@"infoMessage"]) ?: @"No information provided for this cell.";
-    NSString *localizedMessage = [bundle localizedStringForKey:message value:message table:[self.specifier propertyForKey:@"localizationTable"]];
 
-    UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:title message:[localizedMessage stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"] preferredStyle:UIAlertControllerStyleAlert];
+    NSBundle *bundle = [self.specifier.target bundle];
+    NSString *localizationTable = [self.specifier propertyForKey:@"localizationTable"];
+    NSString *localizedTitle = [bundle localizedStringForKey:title value:title table:localizationTable];
+    NSString *localizedMessage = [bundle localizedStringForKey:message value:message table:localizationTable];
+
+    UIAlertController *infoAlert = [UIAlertController alertControllerWithTitle:localizedTitle message:[localizedMessage stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"] preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
 
     [infoAlert addAction:cancelAction];

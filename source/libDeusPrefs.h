@@ -14,6 +14,7 @@
   extern NSString *const LDHeaderOptionSubtitleFontColor;
   extern NSString *const LDHeaderOptionAddInterpolatingMotion;
   extern NSString *const LDHeaderOptionAddMaterialBackground;
+  extern NSString *const LDHeaderOptionBackgroundImageFileName;
 
 @interface LDHeaderView : UIView
 -(instancetype)initWithTitle:(NSString *)title subtitles:(NSArray<NSString *> *)subtitles bundle:(NSBundle *)bundle options:(NSDictionary<NSString *, id> *)options;
