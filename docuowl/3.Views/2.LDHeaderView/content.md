@@ -16,22 +16,25 @@ A table header including an icon, a title label, and randomly selected subtitle 
 - options `NSDictionary`
 - Dictionary of keys and corresponding values containing options used to configure the header view. A list of keys can be found below.
   - LDHeaderOptionIconFileName `string`
-  - Name of the large icon file (should be 225**x**225**px**). If no icon is desired ignore this key.
+  - Name of the large icon file (should be 225x225**px**). If no icon is desired ignore this key.
 
   - LDHeaderOptionTitleFontSize `float`
-  - Font size of the title label. *Default is 35.*
+  - Font size of the title label. <span style="color:#DE2218">*Default is 35.*</span>
 
   - LDHeaderOptionTitleFontColor `UIColor`
   - Font color of the title label.
 
   - LDHeaderOptionSubtitleFontSize `float`
-  - Font size of the subtitle label. *Default is 13.*
+  - Font size of the subtitle label. <span style="color:#DE2218">*Default is 13.*</span>
 
   - LDHeaderOptionSubtitleFontColor `UIColor`
   - Font color of the subtitle label.
 
   - LDHeaderOptionAddInterpolatingMotion `bool`
-  - Adds slight interpolating motion when the device is moved. *Default is NO.*
+  - Adds slight interpolating motion when the device is moved. <span style="color:#DE2218">*Default is NO.*</span>
 
   - LDHeaderOptionAddMaterialBackground `bool`
-  - Adds a blurred background to the header using the user's lockscreen wallpaper. *Default is NO.*
+  - Adds a blurred background to the header. Use the `LDHeaderOptionBackgroundImageFileName` key to define an image to be blurred. <span style="color:#DE2218">*Default is NO.*</span>
+
+  - LDHeaderOptionBackgroundImageFileName `string`
+  - Define the name of the image file to be blurred behind the material view. <span style="color:#DE2218">*Alternatively, set to 'DeviceWallpaper' to use the wallpaper of the device.*</span>
