@@ -7,12 +7,26 @@ Documentation website generated using [Docuowl](https://github.com/docuowl/docuo
 
 #- Installing libDeusPrefs to Theos
 - Pre-Compiled `Method 1`
-- Download libDeusPrefs from Packix, then move the `libDeusPrefs.dylib` file to `$THEOS/lib/`. Also download the `libDeusPrefs.h` header from this repo and place in `$THEOS/include/`.
+- Avoid having to compile `libDeusPrefs`
+  - `Step 1`
+  - Download `libDeusPrefs` bundle from Packix
+
+  - `Step 2`
+  - Copy `/usr/lib/libDeusPrefs.dylib` to `$THEOS/lib/`
+
+  - `Step 3`
+  - Download `libDeusPrefs.h` from [GitHub](https://github.com/LacertosusRepo/libDeusPrefs/releases/latest) and place in `$THEOS/include/`
+
 
 - Compiling From Source `Method 2`
-- Download the [source code](https://github.com/LacertosusRepo/libDeusPrefs), then compile with `make install-to-theos`.
+- Compile `libDeusPrefs` library manually
+  - `Step 1`
+  - Download `libDeusPrefs`'s source code from [GitHub](https://github.com/LacertosusRepo/libDeusPrefs)
 
-*Easy! Right?*
+  - `Step 2`
+  - Compile with `make do install-to-theos`
+
+---
 
 #- Adding libDeusPrefs to a Project
 - Step 1
@@ -26,6 +40,31 @@ prefs_LIBRARIES = DeusPrefs
 ```control
 Depends: com.lacertosusrepo.libdeusprefs (>= 1.0)
 ```
+
+---
+
+#- Previewing Features
+- Pre-Compiled `Method 1`
+- Avoid having to compile `libDeusPrefs`
+  - `Step 1`
+  - Download `libDeusPrefsExample` bundle from [GitHub](https://github.com/LacertosusRepo/libDeusPrefs/tree/main/source/ExamplePreferenceBundle)
+
+  - `Step 2`
+  - Copy `libDeusPrefsExample.bundle` to `/Library/PreferenceBundles/` on your device
+
+  - `Step 3`
+  - Copy `libDeusPrefsExample.plist` to `/Library/PreferenceLoader/Preferences` on your device
+
+  - `Step 4`
+  - Restart the settings app
+
+- Compiling From Source `Method 2`
+- Compile `libDeusPrefsExample` bundle manually
+  - `Step 1`
+  - Download `libDeusPrefs`'s source code from [GitHub](https://github.com/LacertosusRepo/libDeusPrefs/tree/main/source)
+
+  - `Step 2`
+  - Compile with `make do install-bundle`
 
 #- License
 Licensed under the [Apache License](https://github.com/LacertosusRepo/libDeusPrefs/blob/main/LICENSE).

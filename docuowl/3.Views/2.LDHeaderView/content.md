@@ -40,12 +40,12 @@ A table header including an icon, a title label, and randomly selected subtitle 
   - Define the name of the image file to be blurred behind the material view. <span style="color:#DE2218">*Alternatively, set to 'DeviceWallpaper' to use the wallpaper of the device.*</span>
 
   - LDHeaderOptionHeaderStyle `LDHeaderStyle`
-  - Set the style of the header view. <span style="color:#DE2218">*Default is LDHeaderStyleVertical.*</span>
-      - LDHeaderStyleVertical
+  - Set the style of the header view. Must be converted to a `NSNumber`.  <span style="color:#DE2218">*Default is LDHeaderStyleVertical.*</span>
+      - <span style="color:#DE2218">LDHeaderStyleVertical</span>
       - Vertical style with the icon center above the title and subtitle.
 
-      - LDHeaderStyleHorizontalIconRight
+      - <span style="color:#DE2218">LDHeaderStyleHorizontalIconRight</span>
       - Horizontal style with the icon to the right of the title and subtitle.
 
-      - LDHeaderStyleHorizontalIconLeft
+      - <span style="color:#DE2218">LDHeaderStyleHorizontalIconLeft</span>
       - Horizontal style with the icon to the left of the title and subtitle.

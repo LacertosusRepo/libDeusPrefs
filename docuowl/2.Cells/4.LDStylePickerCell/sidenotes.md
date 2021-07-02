@@ -16,7 +16,7 @@
 	<key>key</key>
 	<string>key</string>
 	<key>default</key>
-	<string>darkMode</string>
+	<string>appearanceOption</string>
 	<key>localizationTable</key>
 	<string>Root</string>
 	<key>PostNotification</key>

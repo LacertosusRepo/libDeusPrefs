@@ -13,7 +13,7 @@
 	<string>LDInputSegmentTableCell</string>
 	<key>inputTitle</key>
 	<string>Input Alert Title</string>
-	<key>inputMessage</string>
+	<key>inputMessage</key>
 	<string>Your input message here!</string>
 	<key>defaults</key>
 	<string>com.company.tweak</string>
