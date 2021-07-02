@@ -16,7 +16,7 @@ A table header including an icon, a title label, and randomly selected subtitle 
 - options `NSDictionary`
 - Dictionary of keys and corresponding values containing options used to configure the header view. A list of keys can be found below.
   - LDHeaderOptionIconFileName `string`
-  - Name of the large icon file (should be 225x225**px**). If no icon is desired ignore this key.
+  - Name of the large icon file (should be 225x225**px**) or alternatively an SFSymbol image name can be used instead. If no icon is desired ignore this key.
 
   - LDHeaderOptionTitleFontSize `float`
   - Font size of the title label. <span style="color:#DE2218">*Default is 35.*</span>
@@ -38,3 +38,14 @@ A table header including an icon, a title label, and randomly selected subtitle 
 
   - LDHeaderOptionBackgroundImageFileName `string`
   - Define the name of the image file to be blurred behind the material view. <span style="color:#DE2218">*Alternatively, set to 'DeviceWallpaper' to use the wallpaper of the device.*</span>
+
+  - LDHeaderOptionHeaderStyle `LDHeaderStyle`
+  - Set the style of the header view. <span style="color:#DE2218">*Default is LDHeaderStyleVertical.*</span>
+      - LDHeaderStyleVertical
+      - Vertical style with the icon center above the title and subtitle.
+
+      - LDHeaderStyleHorizontalIconRight
+      - Horizontal style with the icon to the right of the title and subtitle.
+
+      - LDHeaderStyleHorizontalIconLeft
+      - Horizontal style with the icon to the left of the title and subtitle.
