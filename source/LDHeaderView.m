@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
+#import <version.h>
+
 #import "sources/Common.h"
 #import "sources/MTMaterialView.h"
 #import "LDHeaderView.h"
@@ -12,6 +14,7 @@
 	NSString *const LDHeaderOptionAddInterpolatingMotion = @"LDHeaderOptionAddInterpolatingMotion";
 	NSString *const LDHeaderOptionAddMaterialBackground = @"LDHeaderOptionAddMaterialBackground";
 	NSString *const LDHeaderOptionBackgroundImageFileName = @"LDHeaderOptionBackgroundImageFileName";
+	NSString *const LDHeaderOptionHeaderStyle = @"LDHeaderOptionHeaderStyle";
 
 	extern CFArrayRef CPBitmapCreateImagesFromData(CFDataRef cpbitmap, void*, int, void*);
 
@@ -27,26 +30,20 @@
 		self = [super init];
 
 		if(self) {
+			_bundle = bundle;
+
 				//Create stack view
 			_stackView = [[UIStackView alloc] init];
-			_stackView.axis = UILayoutConstraintAxisVertical;
 			_stackView.distribution = UIStackViewDistributionEqualSpacing;
-			_stackView.alignment = UIStackViewAlignmentCenter;
-			_stackView.translatesAutoresizingMaskIntoConstraints = NO;
 			_stackView.spacing = 0;
+			_stackView.translatesAutoresizingMaskIntoConstraints = NO;
 			[self addSubview:_stackView];
 
 				//Icon view (225x255)
 			NSString *iconFileName = options[LDHeaderOptionIconFileName];
-			if(iconFileName && bundle) {
-				_iconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:iconFileName inBundle:bundle compatibleWithTraitCollection:nil]];
+			if(iconFileName.length > 0 && _bundle) {
+				_iconView = [[UIImageView alloc] initWithImage:[self getImageNamed:iconFileName]];
 				_iconView.alpha = 0;
-				[_stackView addArrangedSubview:_iconView];
-
-				[NSLayoutConstraint activateConstraints:@[
-					[_iconView.heightAnchor constraintEqualToConstant:65],
-					[_iconView.widthAnchor constraintEqualToConstant:65],
-				]];
 			}
 
 				//Main label
@@ -58,9 +55,7 @@
 			_titleLabel.text = title;
 			_titleLabel.textColor = titleFontColor;
 			_titleLabel.backgroundColor = [UIColor clearColor];
-			_titleLabel.textAlignment = NSTextAlignmentCenter;
 			_titleLabel.alpha = 0;
-			[_stackView addArrangedSubview:_titleLabel];
 
 				//Subtitle label
 			CGFloat subtitleFontSize = [options[LDHeaderOptionSubtitleFontSize] floatValue] ?: 13;
@@ -71,16 +66,19 @@
 			_subtitleLabel.text = subtitles[arc4random_uniform(subtitles.count)];
 			_subtitleLabel.textColor = subtitleFontColor;
 			_subtitleLabel.backgroundColor = [UIColor clearColor];
-			_subtitleLabel.textAlignment = NSTextAlignmentCenter;
 			_subtitleLabel.alpha = 0;
-			[_stackView addArrangedSubview:_subtitleLabel];
 
 				//Add constraints
 			[NSLayoutConstraint activateConstraints:@[
+				[_stackView.widthAnchor constraintEqualToAnchor:self.widthAnchor constant:-75],
 				[_stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
 				[_stackView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
 			]];
 
+				//Configure views for layout
+			[self configureViewsForStyle:[options[LDHeaderOptionHeaderStyle] intValue]];
+
+				//Add interpolation if wanted
 			BOOL addInterpolatingMotion = [options[LDHeaderOptionAddInterpolatingMotion] boolValue] ?: NO;
 			if(addInterpolatingMotion) {
 				[self addInterpolatingMotionToView];
@@ -90,7 +88,7 @@
 			BOOL addMaterialBackground = [options[LDHeaderOptionAddMaterialBackground] boolValue] ?: NO;
 			if(addMaterialBackground) {
 				MTMaterialView *materialView;
-				if([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){13, 0, 0}]) {
+				if(IS_IOS_OR_NEWER(iOS_13_0)) {
 					materialView = [objc_getClass("MTMaterialView") materialViewWithRecipe:1 configuration:1 initialWeighting:1];
 		      materialView.recipeDynamic = YES;
 		      [materialView setRecipeName:@"plattersDark"];
@@ -104,8 +102,8 @@
 				[self insertSubview:materialView atIndex:0];
 
 				UIImage *materialBackgroundImage;
-				NSString *materialBackgroundImageString = options[LDHeaderOptionBackgroundImageFileName] ?: nil;
-				if([materialBackgroundImageString isEqualToString:@"DeviceWallpaper"]) {
+				NSString *materialBackgroundImageFileName = options[LDHeaderOptionBackgroundImageFileName] ?: nil;
+				if([materialBackgroundImageFileName isEqualToString:@"DeviceWallpaper"]) {
 					NSData *wallpaperData = [NSData dataWithContentsOfFile:@"/User/Library/SpringBoard/OriginalLockBackground.cpbitmap"];
 					if(wallpaperData) {
 						CFArrayRef wallpaperArrayRef = CPBitmapCreateImagesFromData((__bridge CFDataRef)wallpaperData, NULL, 1, NULL);
@@ -114,8 +112,8 @@
 						CFRelease(wallpaperArrayRef);
 					}
 
-				} else if(materialBackgroundImageString != nil) {
-					materialBackgroundImage = [UIImage imageNamed:materialBackgroundImageString inBundle:bundle compatibleWithTraitCollection:nil];
+				} else if(materialBackgroundImageFileName.length > 0) {
+					materialBackgroundImage = [self getImageNamed:materialBackgroundImageFileName];
 				}
 
 				UIImageView *materialBackgroundImageView = [[UIImageView alloc] initWithImage:materialBackgroundImage];
@@ -144,20 +142,113 @@
 		return self;
 	}
 
-	-(void)didMoveToSuperview {
-		[super didMoveToSuperview];
+	-(void)configureViewsForStyle:(LDHeaderStyle)style {
+		switch (style) {
+			default:
+			case LDHeaderStyleVertical:
+			{
+				_titleLabel.textAlignment = NSTextAlignmentCenter;
+				_subtitleLabel.textAlignment = NSTextAlignmentCenter;
 
-		[UIView animateWithDuration:1.0 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			if(_iconView) {
-				_iconView.alpha = 1;
+				_stackView.axis = UILayoutConstraintAxisVertical;
+				_stackView.alignment = UIStackViewAlignmentCenter;
+
+				if(_iconView) {
+					[_stackView addArrangedSubview:_iconView];
+
+					[NSLayoutConstraint activateConstraints:@[
+						[_iconView.heightAnchor constraintEqualToConstant:65],
+						[_iconView.widthAnchor constraintEqualToConstant:65],
+					]];
+				}
+
+				[_stackView addArrangedSubview:_titleLabel];
+
+				if(_subtitleLabel.text.length > 0) {
+					[_stackView addArrangedSubview:_subtitleLabel];
+				}
 			}
+			break;
 
-			_titleLabel.alpha = 1;
-		} completion:nil];
+			case LDHeaderStyleHorizontalIconRight:
+			{
+				_titleLabel.textAlignment = NSTextAlignmentLeft;
+				_subtitleLabel.textAlignment = NSTextAlignmentLeft;
 
-		[UIView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			_subtitleLabel.alpha = 1;
-		} completion:nil];
+				UIStackView *textStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_titleLabel]];
+				textStackView.axis = UILayoutConstraintAxisVertical;
+				textStackView.distribution = UIStackViewDistributionEqualSpacing;
+				textStackView.alignment = UIStackViewAlignmentLeading;
+				textStackView.spacing = 0;
+
+				if(_subtitleLabel.text.length > 0) {
+					[textStackView addArrangedSubview:_subtitleLabel];
+				}
+
+				_stackView.axis = UILayoutConstraintAxisHorizontal;
+				_stackView.alignment = UIStackViewAlignmentFill;
+				_stackView.spacing = 15;
+				[_stackView addArrangedSubview:textStackView];
+
+				if(_iconView) {
+					[_stackView addArrangedSubview:_iconView];
+
+					[NSLayoutConstraint activateConstraints:@[
+						[_iconView.heightAnchor constraintEqualToConstant:65],
+						[_iconView.widthAnchor constraintEqualToConstant:65],
+					]];
+				}
+			}
+			break;
+
+			case LDHeaderStyleHorizontalIconLeft:
+			{
+				_titleLabel.textAlignment = NSTextAlignmentRight;
+				_subtitleLabel.textAlignment = NSTextAlignmentRight;
+
+				UIStackView *textStackView = [[UIStackView alloc] initWithArrangedSubviews:@[_titleLabel]];
+				textStackView.axis = UILayoutConstraintAxisVertical;
+				textStackView.distribution = UIStackViewDistributionEqualSpacing;
+				textStackView.alignment = UIStackViewAlignmentTrailing;
+				textStackView.spacing = 0;
+
+				if(_subtitleLabel.text.length > 0) {
+					[textStackView addArrangedSubview:_subtitleLabel];
+				}
+
+				_stackView.axis = UILayoutConstraintAxisHorizontal;
+				_stackView.alignment = UIStackViewAlignmentFill;
+				_stackView.spacing = 15;
+				[_stackView addArrangedSubview:textStackView];
+
+				if(_iconView) {
+					[_stackView insertArrangedSubview:_iconView atIndex:0];
+
+					[NSLayoutConstraint activateConstraints:@[
+						[_iconView.heightAnchor constraintEqualToConstant:65],
+						[_iconView.widthAnchor constraintEqualToConstant:65],
+					]];
+				}
+			}
+			break;
+		}
+	}
+
+		//Get image from bundle or from SFSymbols
+	-(UIImage *)getImageNamed:(NSString *)name {
+		UIImage *image;
+
+		if(_bundle) {
+			image = [UIImage imageNamed:name inBundle:_bundle compatibleWithTraitCollection:nil];
+		}
+
+		if(!image) {
+			if(IS_IOS_OR_NEWER(iOS_13_0) && !image) {
+				image = [UIImage systemImageNamed:name];
+			}
+		}
+
+		return image;
 	}
 
 	-(void)addInterpolatingMotionToView {
@@ -173,5 +264,21 @@
 		effectsGroup.motionEffects = @[horizontal, vertical];
 
 		[self addMotionEffect:effectsGroup];
+	}
+
+	-(void)didMoveToSuperview {
+		[super didMoveToSuperview];
+
+		[UIView animateWithDuration:1.0 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+			if(_iconView) {
+				_iconView.alpha = 1;
+			}
+
+			_titleLabel.alpha = 1;
+		} completion:nil];
+
+		[UIView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+			_subtitleLabel.alpha = 1;
+		} completion:nil];
 	}
 @end
