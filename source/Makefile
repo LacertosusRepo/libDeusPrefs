@@ -17,3 +17,6 @@ install-to-theos::
 	@echo "Installing libDeusPrefs to Theos..."
 	@cp -R .theos/obj/debug/$(LIBRARY_NAME).dylib $(THEOS)/lib/
 	@cp -R $(LIBRARY_NAME).h $(THEOS)/include/
+
+install-bundle::
+	@$(MAKE) -C libdeusprefsexample clean do

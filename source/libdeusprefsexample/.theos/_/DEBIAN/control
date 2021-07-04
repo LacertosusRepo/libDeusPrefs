@@ -1,0 +1,10 @@
+Package: com.lacertosusrepo.libdeusprefsexample
+Name: libDeusPrefs
+Depends: mobilesubstrate, preferenceloader, com.lacertosusrepo.libDeusPrefs
+Architecture: iphoneos-arm
+Description: Showcase of what libDeusPrefs can do...
+Maintainer: LacertosusDeus <LacertosusThemes@gmail.com>
+Author: LacertosusDeus <LacertosusThemes@gmail.com>
+Section: Development
+Version: 1.6-2+debug
+Installed-Size: 164

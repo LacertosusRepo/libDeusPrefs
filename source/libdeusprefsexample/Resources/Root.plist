@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LDInputSegmentTableCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>cellClass</key>
+			<string>LDInputSegmentTableCell</string>
+			<key>inputTitle</key>
+			<string>Input Alert Title</string>
+			<key>inputMessage</key>
+			<string>Your input message here!</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>default</key>
+			<string>2</string>
+			<key>validTitles</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+				<string>5</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>3</integer>
+				<integer>4</integer>
+				<integer>5</integer>
+			</array>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>id</key>
+			<string>1</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LDLabeledSegmentTableCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSegmentCell</string>
+			<key>cellClass</key>
+			<string>LDLabeledSegmentTableCell</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>label</key>
+			<string>Segment Label</string>
+			<key>default</key>
+			<string>1</string>
+			<key>validTitles</key>
+			<array>
+				<string>One Option</string>
+				<string>Two Option</string>
+			</array>
+			<key>validValues</key>
+			<array>
+				<integer>1</integer>
+				<integer>2</integer>
+			</array>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>id</key>
+			<string>2</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LDLabeledSliderCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>cellClass</key>
+			<string>LDLabeledSliderCell</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>label</key>
+			<string>Slider Label</string>
+			<key>default</key>
+			<string>5</string>
+			<key>min</key>
+			<string>0</string>
+			<key>max</key>
+			<string>10</string>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>id</key>
+			<string>3</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LDStylePickerCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSTableCell</string>
+			<key>cellClass</key>
+			<string>LDStylePickerCell</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>default</key>
+			<string>optionOneValue</string>
+			<key>localizationTable</key>
+			<string>Root</string>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>options</key>
+			<array>
+				<dict>
+					<key>label</key>
+					<string>Option One</string>
+					<key>appearanceOption</key>
+					<string>optionOneValue</string>
+					<key>image</key>
+					<string>darkimage</string>
+				</dict>
+
+				<dict>
+					<key>label</key>
+					<string>Option Two</string>
+					<key>appearanceOption</key>
+					<string>optionTwoValue</string>
+					<key>image</key>
+					<string>colorizedimage</string>
+					<key>imageAlt</key>
+					<string>lightimage</string>
+				</dict>
+			</array>
+			<key>id</key>
+			<string>4</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LDSwitchWithInfoCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>cellClass</key>
+			<string>LDSwitchWithInfoCell</string>
+			<key>infoTitle</key>
+			<string>Info Alert Title</string>
+			<key>infoMessage</key>
+			<string>Your info message here!</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>label</key>
+			<string>Switch Label</string>
+			<key>default</key>
+			<false/>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>id</key>
+			<string>5</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LDTimeIntervalPickerCell</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>cellClass</key>
+			<string>LDTimeIntervalPickerCell</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>label</key>
+			<string>Set Time Interval</string>
+			<key>default</key>
+			<integer>4584</integer>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>id</key>
+			<string>6</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string></string>
+</dict>
+</plist>

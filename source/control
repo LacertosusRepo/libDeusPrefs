@@ -1,7 +1,7 @@
 Package: com.lacertosusrepo.libdeusprefs
 Name: libDeusPrefs
 Depends: preferenceloader
-Version: 1.0.2
+Version: 1.0.3
 Architecture: iphoneos-arm
 Description: Support library for my preferences...
 Maintainer: LacertosusDeus <LacertosusThemes@gmail.com>

@@ -22,6 +22,8 @@
       self.accessoryView = _inputButton;
 
       [self.control addTarget:self action:@selector(valueChangedWithControl) forControlEvents:UIControlEventValueChanged];
+
+      [self updateSelectedIndex];
     }
 
     return self;
@@ -47,13 +49,14 @@
       NSNumber *inputValue = [NSNumber numberWithInt:[enterValueAlert.textFields[0].text integerValue]];
       [self.specifier performSetterWithValue:inputValue];
 
+      UISegmentControl *control = (UISegmentControl *)self.control;
       if([_segmentValues containsObject:inputValue]) {
-        ((UISegmentControl *)self.control).selectedSegmentIndex = [_segmentValues indexOfObject:inputValue];
+        control.selectedSegmentIndex = [_segmentValues indexOfObject:inputValue];
         _inputButton.selected = NO;
         [self animateInputButton:NO];
 
       } else {
-        ((UISegmentControl *)self.control).selectedSegmentIndex = UISegmentedControlNoSegment;
+        control.selectedSegmentIndex = UISegmentedControlNoSegment;
         _inputButton.selected = YES;
         [self animateInputButton:YES];
       }
@@ -74,11 +77,17 @@
     }
   }
 
-  -(void)didMoveToWindow {
-    [super didMoveToWindow];
+  -(void)updateSelectedIndex {
+    UISegmentControl *control = (UISegmentControl *)self.control;
+    NSNumber *value = [self.specifier performGetter];
 
-    if(![_segmentValues containsObject:[self.specifier performGetter]]) {
-      ((UISegmentControl *)self.control).selectedSegmentIndex = UISegmentedControlNoSegment;
+    if([_segmentValues containsObject:value]) {
+      control.selectedSegmentIndex = [_segmentValues indexOfObject:value];
+      _inputButton.selected = NO;
+      [self animateInputButton:NO];
+
+    } else {
+      control.selectedSegmentIndex = UISegmentedControlNoSegment;
       _inputButton.selected = YES;
       [self animateInputButton:YES];
     }
@@ -125,15 +134,11 @@
   -(void)refreshCellContentsWithSpecifier:(PSSpecifier *)specifier {
     [super refreshCellContentsWithSpecifier:specifier];
 
+    [self updateSelectedIndex];
+
     if([self respondsToSelector:@selector(tintColor)]) {
       _inputButton.layer.borderColor = self.tintColor.CGColor;
       _inputButton.tintColor = self.tintColor;
 	  }
-
-    if(![_segmentValues containsObject:[specifier performGetter]]) {
-      ((UISegmentControl *)self.control).selectedSegmentIndex = UISegmentedControlNoSegment;
-      _inputButton.selected = YES;
-      [self animateInputButton:YES];
-    }
   }
 @end

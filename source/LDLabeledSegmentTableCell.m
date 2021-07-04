@@ -11,7 +11,7 @@
 		self = [super initWithStyle:style reuseIdentifier:identifier specifier:specifier];
 
 		if(self) {
-			[specifier setProperty:@56 forKey:@"height"];
+			[specifier setProperty:@64 forKey:@"height"];
 
 			NSBundle *bundle = [specifier.target bundle];
 			NSString *label = [specifier propertyForKey:@"label"];
