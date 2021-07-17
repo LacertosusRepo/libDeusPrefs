@@ -1,4 +1,6 @@
 #import <UIKit/UIKit.h>
+
+#import "NSLayoutConstraint+ParvusConstraint.h"
 #import "LDAnimatedTitleView.h"
 
 @implementation LDAnimatedTitleView {
@@ -23,11 +25,10 @@
 
       [self addSubview:_titleLabel];
 
-      [NSLayoutConstraint activateConstraints:@[
-        [self.widthAnchor constraintEqualToAnchor:_titleLabel.widthAnchor],
-        [self.heightAnchor constraintEqualToAnchor:_titleLabel.heightAnchor],
+      [NSLayoutConstraint ld_constrainView:self toView:_titleLabel anchors:@"w, h"];
+      [NSLayoutConstraint ld_constrainView:_titleLabel toView:self anchors:@"x"];
 
-        [_titleLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
+      [NSLayoutConstraint activateConstraints:@[
         _yConstraint = [_titleLabel.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:100],
       ]];
     }

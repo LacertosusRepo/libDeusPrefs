@@ -1,6 +1,7 @@
 #import <Preferences/PSSliderTableCell.h>
-#import <Preferences/PSSpecifier.h>
+
 #import "sources/Common.h"
+#import "NSLayoutConstraint+ParvusConstraint.h"
 #import "LDLabeledSliderCell.h"
 
 @implementation LDLabeledSliderCell {
@@ -14,10 +15,10 @@
 		self = [super initWithStyle:style reuseIdentifier:identifier specifier:specifier];
 
 		if(self) {
-			[specifier setProperty:@56 forKey:@"height"];
+			[specifier setProperty:@56 forKey:PSTableCellHeightKey];
 
 			NSBundle *bundle = [specifier.target bundle];
-			NSString *label = [specifier propertyForKey:@"label"];
+			NSString *label = [specifier propertyForKey:PSTitleKey];
 			NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
 
 			_sliderLabel = [[UILabel alloc] init];
@@ -47,14 +48,10 @@
 			_stackView.translatesAutoresizingMaskIntoConstraints = NO;
 			[self.contentView addSubview:_stackView];
 
+			[NSLayoutConstraint ld_constrainView:_stackView toView:self.contentView anchors:@"top, bottom, leading, trailing" constants:LDEdgeConstantsMake(4, -4, 15, -15)];
+
 			[NSLayoutConstraint activateConstraints:@[
-				[_stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:4],
-				[_stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:15],
-				[_stackView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-15],
-				[_stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-4],
-
 				[_sliderStackView.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor],
-
 				[_valueLabel.heightAnchor constraintEqualToAnchor:_sliderStackView.heightAnchor],
 			]];
 

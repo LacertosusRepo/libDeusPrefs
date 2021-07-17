@@ -1,4 +1,7 @@
 #import <UIKit/UIKit.h>
+
+#import "../sources/Common.h"
+#import "../NSLayoutConstraint+ParvusConstraint.h"
 #import "LDStyleCheckView.h"
 
 @implementation LDStyleCheckView {
@@ -6,28 +9,31 @@
   UIImageView *_checkmarkImageView;
 }
 
-  -(instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+  -(instancetype)init {
+    self = [super init];
 
     if(self) {
-      UIImage *unchecked = [[UIImage kitImageNamed:@"UIRemoveControlMultiNotCheckedImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-      _circleImageView = [[UIImageView alloc] initWithImage:unchecked];
+      UIImage *circleImage = (IS_IOS_OR_NEWER(iOS_13_0)) ? [UIImage systemImageNamed:@"circle"] : [[UIImage kitImageNamed:@"UIRemoveControlMultiNotCheckedImage"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      _circleImageView = [[UIImageView alloc] initWithImage:circleImage];
+      _circleImageView.contentMode = UIViewContentModeScaleAspectFit;
       _circleImageView.translatesAutoresizingMaskIntoConstraints = NO;
-      [_circleImageView sizeToFit];
       [self addSubview:_circleImageView];
 
-      UIImage *checked = [[UIImage kitImageNamed:@"UITintedCircularButtonCheckmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-      _checkmarkImageView = [[UIImageView alloc] initWithImage:checked];
+      UIImage *checkedImage = (IS_IOS_OR_NEWER(iOS_13_0)) ? [UIImage systemImageNamed:@"checkmark.circle.fill"] : [[UIImage kitImageNamed:@"UITintedCircularButtonCheckmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      _checkmarkImageView = [[UIImageView alloc] initWithImage:checkedImage];
+      _checkmarkImageView.contentMode = UIViewContentModeScaleAspectFit;
       _checkmarkImageView.translatesAutoresizingMaskIntoConstraints = NO;
-      [_checkmarkImageView sizeToFit];
       [self addSubview:_checkmarkImageView];
+
+      [NSLayoutConstraint ld_centerView:_circleImageView inView:self constants:LDSizeConstantsMake(22, 22)];
+      [NSLayoutConstraint ld_centerView:_checkmarkImageView inView:self constants:LDSizeConstantsMake(22, 22)];
     }
 
     return self;
   }
 
   -(void)setSelected:(BOOL)selected {
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
       _checkmarkImageView.alpha = (selected) ? 1.0 : 0.0;
     }];
   }

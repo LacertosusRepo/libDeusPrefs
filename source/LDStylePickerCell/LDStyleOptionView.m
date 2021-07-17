@@ -1,4 +1,7 @@
 #import <UIKit/UIKit.h>
+
+#import "../NSLayoutConstraint+ParvusConstraint.h"
+#import "LDStyleOptionViewDelegate.h"
 #import "LDStyleCheckView.h"
 #import "LDStyleOptionView.h"
 
@@ -39,15 +42,8 @@
       _stackView.translatesAutoresizingMaskIntoConstraints = NO;
       [self addSubview:_stackView];
 
-      [NSLayoutConstraint activateConstraints:@[
-        [_stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
-        [_stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-        [_stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-        [_stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
-
-        [_checkView.heightAnchor constraintEqualToConstant:22],
-        [_checkView.widthAnchor constraintEqualToConstant:22],
-      ]];
+      [NSLayoutConstraint ld_constrainView:_stackView toView:self anchors:@"top, bottom, leading, trailing"];
+      [NSLayoutConstraint ld_sizeView:_checkView constants:LDSizeConstantsMake(22, 22)];
 
       _pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handlePress:)];
       _pressGesture.delegate = self;
@@ -78,70 +74,63 @@
 
     if(_highlighted) {
       CABasicAnimation *showBorder = [CABasicAnimation animationWithKeyPath:@"borderWidth"];
-      showBorder.duration = 0.1;
+      showBorder.duration = 0.2;
       showBorder.fromValue = @0;
       showBorder.toValue = @3;
 
       _previewImageView.layer.borderWidth = 3;
       [_previewImageView.layer addAnimation:showBorder forKey:@"Show Border"];
+
+      [UIView transitionWithView:self.label duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        self.label.font = [UIFont systemFontOfSize:13 weight:UIFontWeightSemibold];
+      } completion:nil];
+
+      [UIView animateWithDuration:0.2 animations:^{
+        self.transform = CGAffineTransformMakeScale(1, 1);
+      } completion:nil];
     }
 
-    if(!_highlighted && _previewImageView.layer.borderWidth == 3) {
-      CABasicAnimation *hideBorder = [CABasicAnimation animationWithKeyPath:@"borderWidth"];
-      hideBorder.duration = 0.1;
-      hideBorder.fromValue = @3;
-      hideBorder.toValue = @0;
+    if(!_highlighted) {
+      if(_previewImageView.layer.borderWidth == 3) {
+        CABasicAnimation *hideBorder = [CABasicAnimation animationWithKeyPath:@"borderWidth"];
+        hideBorder.duration = 0.2;
+        hideBorder.fromValue = @3;
+        hideBorder.toValue = @0;
 
-      _previewImageView.layer.borderWidth = 0;
-      [_previewImageView.layer addAnimation:hideBorder forKey:@"Hide Border"];
-    }
-  }
+        _previewImageView.layer.borderWidth = 0;
+        [_previewImageView.layer addAnimation:hideBorder forKey:@"Hide Border"];
+      }
 
-  -(void)setDisabled:(BOOL)disabled {
-    _disabled = disabled;
+      [UIView transitionWithView:self.label duration:0.2 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+        self.label.font = [UIFont systemFontOfSize:13 weight:UIFontWeightLight];
+      } completion:nil];
 
-    if(disabled) {
-      _pressGesture.enabled = NO;
-
-      [UIView animateWithDuration:0.1 animations:^{
-        _previewImageView.alpha = 0.5;
-        _previewImageView.layer.borderColor = [UIColor grayColor].CGColor;
-        self.label.alpha = 0.5;
-        _checkView.alpha = 0.5;
-      }];
-
-    } else {
-      _pressGesture.enabled = YES;
-
-      [UIView animateWithDuration:0.1 animations:^{
-        _previewImageView.alpha = 1.0;
-        _previewImageView.layer.borderColor = self.tintColor.CGColor;
-        self.label.alpha = 1.0;
-        _checkView.alpha = 1.0;
-      }];
+      [UIView animateWithDuration:0.2 animations:^{
+        self.transform = CGAffineTransformMakeScale(0.95, 0.95);
+      } completion:nil];
     }
   }
 
   -(void)updateViewForOption:(id)style {
-    self.highlighted = [style isEqualToString:_appearanceOption];
+    if([style isKindOfClass:[NSNumber class]]) {
+      style = [style stringValue];
+    }
+
+    self.highlighted = [style isEqualToString:[_appearanceOption stringValue]];
   }
 
   -(void)handlePress:(UIGestureRecognizer *)gesture {
     switch (gesture.state) {
       case UIGestureRecognizerStateBegan:
       {
-        [UIView animateWithDuration:0.1 animations:^{
-          _previewImageView.alpha = 0.75;
-        }];
+        [UIView animateWithDuration:0.2 animations:^{
+          self.transform = CGAffineTransformMakeScale(1, 1);
+        } completion:nil];
       }
       break;
 
       case UIGestureRecognizerStateRecognized:
       {
-        [UIView animateWithDuration:0.1 animations:^{
-          _previewImageView.alpha = 1.0;
-        }];
-
         if(!self.highlighted) {
           [self.delegate selectedOption:self];
         }
@@ -151,9 +140,9 @@
       case UIGestureRecognizerStateFailed:
       case UIGestureRecognizerStateCancelled:
       {
-        [UIView animateWithDuration:0.1 animations:^{
-          _previewImageView.alpha = 1.0;
-        }];
+        [UIView animateWithDuration:0.2 animations:^{
+          self.transform = CGAffineTransformMakeScale(0.95, 0.95);
+        } completion:nil];
       }
       break;
 
@@ -169,6 +158,31 @@
     }
 
     return YES;
+  }
+
+  -(void)setDisabled:(BOOL)disabled {
+    _disabled = disabled;
+
+    if(disabled) {
+      _pressGesture.enabled = NO;
+
+      [UIView animateWithDuration:0.2 animations:^{
+        _previewImageView.alpha = 0.5;
+        _previewImageView.layer.borderColor = [UIColor grayColor].CGColor;
+        self.label.alpha = 0.5;
+        _checkView.alpha = 0.5;
+      }];
+
+    } else {
+      _pressGesture.enabled = YES;
+
+      [UIView animateWithDuration:0.2 animations:^{
+        _previewImageView.alpha = 1.0;
+        _previewImageView.layer.borderColor = self.tintColor.CGColor;
+        self.label.alpha = 1.0;
+        _checkView.alpha = 1.0;
+      }];
+    }
   }
 
   -(void)tintColorDidChange {

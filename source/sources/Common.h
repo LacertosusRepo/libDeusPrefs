@@ -1,6 +1,9 @@
 #import <Preferences/PSSpecifier.h>
 #import <Preferences/PSControlTableCell.h>
+#import <objc/runtime.h>
+
 #import <HBLog.h>
+#import <version.h>
 
 @interface UIView (Private)
 -(UIViewController *)_viewControllerForAncestor;

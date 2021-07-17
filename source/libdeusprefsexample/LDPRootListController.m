@@ -80,7 +80,7 @@
 		NSDictionary *selectedOption = arrayOfOptions[arc4random_uniform(arrayOfOptions.count)];
 		LDHeaderView *header = [[LDHeaderView alloc] initWithTitle:@"Example Title" subtitles:subtitles bundle:[self bundle] options:selectedOption];
 
-		CGFloat height = (selectedOption.count > 3) ? 150 : 125;
+		CGFloat height = (selectedOption.count > 3) ? 165 : 125;
 		header.frame = CGRectMake(0, 0, header.bounds.size.width, height);
 
 		self.table.tableHeaderView = header;

@@ -12,6 +12,11 @@ libDeusPrefs_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 
 include $(THEOS_MAKE_PATH)/library.mk
 
+ifeq ($(INSTALL_BUNDLE),1)
+SUBPROJECTS += libdeusprefsexample
+include $(THEOS_MAKE_PATH)/aggregate.mk
+endif
+
 install-to-theos::
 	@$(MAKE)
 	@echo "Installing libDeusPrefs to Theos..."
@@ -19,4 +24,4 @@ install-to-theos::
 	@cp -R $(LIBRARY_NAME).h $(THEOS)/include/
 
 install-bundle::
-	@$(MAKE) -C libdeusprefsexample clean do
+	@$(MAKE) INSTALL_BUNDLE=1 do

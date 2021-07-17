@@ -1,5 +1,5 @@
-#import <Preferences/PSSpecifier.h>
 #import "sources/Common.h"
+#import "NSLayoutConstraint+ParvusConstraint.h"
 #import "LDLabeledSegmentTableCell.h"
 
 @implementation LDLabeledSegmentTableCell {
@@ -11,10 +11,10 @@
 		self = [super initWithStyle:style reuseIdentifier:identifier specifier:specifier];
 
 		if(self) {
-			[specifier setProperty:@64 forKey:@"height"];
+			[specifier setProperty:@64 forKey:PSTableCellHeightKey];
 
 			NSBundle *bundle = [specifier.target bundle];
-			NSString *label = [specifier propertyForKey:@"label"];
+			NSString *label = [specifier propertyForKey:PSTitleKey];
 			NSString *localizationTable = [specifier propertyForKey:@"localizationTable"];
 
 			_segmentLabel = [[UILabel alloc] init];
@@ -30,12 +30,9 @@
 			_stackView.translatesAutoresizingMaskIntoConstraints = NO;
 			[self.contentView addSubview:_stackView];
 
-			[NSLayoutConstraint activateConstraints:@[
-				[_stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:4],
-				[_stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:15],
-				[_stackView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-15],
-				[_stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-4],
+			[NSLayoutConstraint ld_constrainView:_stackView toView:self.contentView anchors:@"top, bottom, leading, trailing" constants:LDEdgeConstantsMake(6, -6, 15, -15)];
 
+			[NSLayoutConstraint activateConstraints:@[
 				[self.control.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor],
 			]];
 		}

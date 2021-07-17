@@ -5,7 +5,11 @@
 #import <UIKit/UIKit.h>
 #import <Preferences/PSTableCell.h>
 #import <Preferences/PSSpecifier.h>
+
+#import "../sources/Common.h"
+#import "../NSLayoutConstraint+ParvusConstraint.h"
 #import "LDStyleOptionView.h"
+#import "LDStyleOptionViewDelegate.h"
 #import "LDStylePickerCell.h"
 
 @implementation LDStylePickerCell {
@@ -30,6 +34,7 @@
         optionView.previewImage = [UIImage imageNamed:[styleProperties objectForKey:@"image"] inBundle:bundle compatibleWithTraitCollection:nil];
         optionView.previewImageAlt = [UIImage imageNamed:[styleProperties objectForKey:@"imageAlt"] inBundle:bundle compatibleWithTraitCollection:nil];
         optionView.highlighted = [optionView.appearanceOption isEqual:[specifier performGetter]];
+        optionView.identifier = [styleProperties objectForKey:@"id"];
         optionView.translatesAutoresizingMaskIntoConstraints = NO;
         [optionViewArray addObject:optionView];
       }
@@ -42,12 +47,7 @@
       _stackView.translatesAutoresizingMaskIntoConstraints = NO;
       [self.contentView addSubview:_stackView];
 
-      [NSLayoutConstraint activateConstraints:@[
-        [_stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-        [_stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-        [_stackView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
-        [_stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor],
-      ]];
+      [NSLayoutConstraint ld_constrainView:_stackView toView:self.contentView anchors:@"top, bottom, leading, trailing"];
     }
 
     return self;
@@ -63,7 +63,7 @@
 
   -(LDStyleOptionView *)optionViewForID:(NSString *)identifier {
     for(LDStyleOptionView *view in _stackView.arrangedSubviews) {
-      if([view.label.text isEqualToString:identifier]) {
+      if([view.identifier isEqualToString:identifier]) {
         return view;
       }
     }

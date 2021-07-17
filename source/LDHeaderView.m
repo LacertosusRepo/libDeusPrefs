@@ -1,9 +1,8 @@
 #import <UIKit/UIKit.h>
-#import <objc/runtime.h>
-#import <version.h>
 
 #import "sources/Common.h"
 #import "sources/MTMaterialView.h"
+#import "NSLayoutConstraint+ParvusConstraint.h"
 #import "LDHeaderView.h"
 
 	NSString *const LDHeaderOptionIconFileName = @"LDHeaderOptionIconFileName";
@@ -69,11 +68,7 @@
 			_subtitleLabel.alpha = 0;
 
 				//Add constraints
-			[NSLayoutConstraint activateConstraints:@[
-				[_stackView.widthAnchor constraintEqualToAnchor:self.widthAnchor constant:-75],
-				[_stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
-				[_stackView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor],
-			]];
+			[NSLayoutConstraint ld_constrainView:_stackView toView:self anchors:@"w, x, y" constants:LDSelectConstantsMake(@{@"w" : @-75})];
 
 				//Configure views for layout
 			[self configureViewsForStyle:[options[LDHeaderOptionHeaderStyle] intValue]];
@@ -101,22 +96,7 @@
 				materialView.translatesAutoresizingMaskIntoConstraints = NO;
 				[self insertSubview:materialView atIndex:0];
 
-				UIImage *materialBackgroundImage;
-				NSString *materialBackgroundImageFileName = options[LDHeaderOptionBackgroundImageFileName] ?: nil;
-				if([materialBackgroundImageFileName isEqualToString:@"DeviceWallpaper"]) {
-					NSData *wallpaperData = [NSData dataWithContentsOfFile:@"/User/Library/SpringBoard/OriginalLockBackground.cpbitmap"];
-					if(wallpaperData) {
-						CFArrayRef wallpaperArrayRef = CPBitmapCreateImagesFromData((__bridge CFDataRef)wallpaperData, NULL, 1, NULL);
-						NSArray *wallpaperArray = (__bridge NSArray *)wallpaperArrayRef;
-						materialBackgroundImage = [[UIImage alloc] initWithCGImage:(__bridge CGImageRef)(wallpaperArray[0])];
-						CFRelease(wallpaperArrayRef);
-					}
-
-				} else if(materialBackgroundImageFileName.length > 0) {
-					materialBackgroundImage = [self getImageNamed:materialBackgroundImageFileName];
-				}
-
-				UIImageView *materialBackgroundImageView = [[UIImageView alloc] initWithImage:materialBackgroundImage];
+				UIImageView *materialBackgroundImageView = [[UIImageView alloc] init];
 				materialBackgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
 				materialBackgroundImageView.clipsToBounds = YES;
 				materialBackgroundImageView.layer.cornerRadius = 10;
@@ -125,17 +105,26 @@
 				[materialBackgroundImageView setContentCompressionResistancePriority:0 forAxis:UILayoutConstraintAxisVertical];
 				[self insertSubview:materialBackgroundImageView atIndex:0];
 
-				[NSLayoutConstraint activateConstraints:@[
-					[materialBackgroundImageView.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor constant:50],
-					[materialBackgroundImageView.heightAnchor constraintEqualToAnchor:_stackView.heightAnchor constant:20],
-					[materialBackgroundImageView.centerXAnchor constraintEqualToAnchor:_stackView.centerXAnchor],
-					[materialBackgroundImageView.centerYAnchor constraintEqualToAnchor:_stackView.centerYAnchor],
+				__weak UIImageView *imageView = materialBackgroundImageView;
 
-					[materialView.widthAnchor constraintEqualToAnchor:_stackView.widthAnchor constant:50],
-					[materialView.heightAnchor constraintEqualToAnchor:_stackView.heightAnchor constant:20],
-					[materialView.centerXAnchor constraintEqualToAnchor:_stackView.centerXAnchor],
-					[materialView.centerYAnchor constraintEqualToAnchor:_stackView.centerYAnchor],
-				]];
+				NSString *materialBackgroundImageFileName = options[LDHeaderOptionBackgroundImageFileName] ?: nil;
+				if([materialBackgroundImageFileName isEqualToString:@"DeviceWallpaper"]) {
+					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,  0), ^{
+						NSData *wallpaperData = [NSData dataWithContentsOfFile:@"/User/Library/SpringBoard/OriginalLockBackground.cpbitmap"];
+						if(wallpaperData) {
+							CFArrayRef wallpaperArrayRef = CPBitmapCreateImagesFromData((__bridge CFDataRef)wallpaperData, NULL, 1, NULL);
+							NSArray *wallpaperArray = (__bridge NSArray *)wallpaperArrayRef;
+							imageView.image = [[UIImage alloc] initWithCGImage:(__bridge CGImageRef)(wallpaperArray[0])];
+							CFRelease(wallpaperArrayRef);
+						}
+					});
+
+				} else if(materialBackgroundImageFileName.length > 0) {
+					materialBackgroundImageView.image = [self getImageNamed:materialBackgroundImageFileName];;
+				}
+
+				[NSLayoutConstraint ld_constrainView:materialBackgroundImageView toView:_stackView anchors:@"w, h, x, y" constants:LDSizeConstantsMake(50, 20)];
+				[NSLayoutConstraint ld_constrainView:materialView toView:_stackView anchors:@"w, h, x, y" constants:LDSizeConstantsMake(50, 20)];
 			}
 		}
 

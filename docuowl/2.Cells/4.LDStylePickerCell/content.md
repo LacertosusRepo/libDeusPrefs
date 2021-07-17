@@ -9,7 +9,7 @@ A style picker just like Apple's light/dark mode picker. Useful for visually con
   - label `string`
   - String to be displayed below the option's image.
 
-  - appearanceOption `string`
+  - appearanceOption `string/integer`
   - Value that will be saved when the option is selected.
 
   - image `string`
@@ -17,6 +17,9 @@ A style picker just like Apple's light/dark mode picker. Useful for visually con
 
   - imageAlt `string`
   - Name of an alternative image to be displayed when the device is in dark mode. This is an optional key, if ignored the normal image will be used in both light & dark mode.
+
+  - id `string`
+  - Identifier for the option view.
 
 - infoMessage `string`
 - Message for the info alert.

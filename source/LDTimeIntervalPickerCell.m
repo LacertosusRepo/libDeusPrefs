@@ -1,5 +1,5 @@
-#import <Preferences/PSSpecifier.h>
 #import "sources/Common.h"
+#import "NSLayoutConstraint+ParvusConstraint.h"
 #import "LDTimeIntervalPickerCell.h"
 
 @implementation LDTimeIntervalPickerCell {
@@ -26,15 +26,15 @@
   }
 
   -(void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
     if(selected) {
       [self presentAlert];
-    } else {
-      [super setSelected:selected animated:animated];
     }
   }
 
   -(void)presentAlert {
-    NSString *title = [self.specifier propertyForKey:@"label"];
+    NSString *title = [self.specifier propertyForKey:PSTitleKey];
 
     _alert = [UIAlertController alertControllerWithTitle:title message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
     [_alert addAction:[UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleCancel handler:nil]];
@@ -52,13 +52,8 @@
     _alert.view.clipsToBounds = YES;
     [_alert.view addSubview:_timePicker];
 
-    [NSLayoutConstraint activateConstraints:@[
-      [_alert.view.widthAnchor constraintEqualToAnchor:_timePicker.widthAnchor],
-      [_alert.view.heightAnchor constraintEqualToAnchor:_timePicker.heightAnchor constant:100],
-
-      [_timePicker.centerXAnchor constraintEqualToAnchor:_alert.view.centerXAnchor],
-      [_timePicker.centerYAnchor constraintEqualToAnchor:_alert.view.centerYAnchor constant:-25],
-    ]];
+    [NSLayoutConstraint ld_constrainView:_alert.view toView:_timePicker anchors:@"w, h" constants:LDSelectConstantsMake(@{@"h" : @100})];
+    [NSLayoutConstraint ld_constrainView:_timePicker toView:_alert.view anchors:@"x, y" constants:LDSelectConstantsMake(@{@"y" : @-25})];
 
     //Alderis
     //https://github.com/hbang/Alderis/blob/138dfd16028caf6bebb0e9c611ea44934696d878/lcpshim/HBColorPickerTableCell.m#L86-L87

@@ -1,4 +1,3 @@
-#import <Preferences/PSSpecifier.h>
 #import "sources/Common.h"
 #import "LDInputSegmentTableCell.h"
 
@@ -11,7 +10,7 @@
     self = [super initWithStyle:style reuseIdentifier:identifier specifier:specifier];
 
     if(self) {
-      _segmentValues = [specifier propertyForKey:@"validValues"];
+      _segmentValues = [specifier propertyForKey:PSValidValuesKey];
 
       _inputButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
       _inputButton.contentEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
@@ -30,7 +29,7 @@
   }
 
   -(void)inputButtonTapped {
-    NSString *inputTitle = ([self.specifier propertyForKey:@"inputTitle"]) ?: [self.specifier propertyForKey:@"label"];
+    NSString *inputTitle = ([self.specifier propertyForKey:@"inputTitle"]) ?: [self.specifier propertyForKey:PSTitleKey];
     NSString *inputMessage = [self.specifier propertyForKey:@"inputMessage"] ?: @"No input message provided for this cell.";
 
     NSBundle *bundle = [self.specifier.target bundle];

@@ -149,7 +149,8 @@
 					<key>label</key>
 					<string>Option Two</string>
 					<key>appearanceOption</key>
-					<string>optionTwoValue</string>
+					<!--<string>optionTwoValue</string>-->
+					<integer>1</integer>
 					<key>image</key>
 					<string>colorizedimage</string>
 					<key>imageAlt</key>
@@ -175,6 +176,30 @@
 			<string>Info Alert Title</string>
 			<key>infoMessage</key>
 			<string>Your info message here!</string>
+			<key>defaults</key>
+			<string>com.company.tweak</string>
+			<key>key</key>
+			<string></string>
+			<key>label</key>
+			<string>Switch Label</string>
+			<key>default</key>
+			<false/>
+			<key>PostNotification</key>
+			<string>com.company.tweak/ReloadPrefs</string>
+			<key>id</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>cellClass</key>
+			<string>LDSwitchWithInfoCell</string>
+			<key>infoTitle</key>
+			<string>Info Alert Title</string>
+			<key>infoMessage</key>
+			<string>Your info message here!</string>
+			<key>infoAlternativeStyle</key>
+			<true/>
 			<key>defaults</key>
 			<string>com.company.tweak</string>
 			<key>key</key>
