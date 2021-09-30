@@ -9,7 +9,7 @@ Documentation website generated using [Docuowl](https://github.com/docuowl/docuo
 - Pre-Compiled `Method 1`
 - Avoid having to compile `libDeusPrefs`
   - `Step 1`
-  - Download `libDeusPrefs` bundle from Chariz
+  - Download `libDeusPrefs` from Chariz
 
   - `Step 2`
   - Copy `/usr/lib/libDeusPrefs.dylib` to `$THEOS/lib/`

@@ -7,9 +7,6 @@ Constrain view's width and height anchors to constants.
 - primaryView `UIView`
 - View to be anchored.
 
-- secondaryView `UIView`
-- View to be anchored to.
-
 - constants `LDLayoutConstants`
 - Struct with constants for each anchor. Multiple helper functions to allow to create `LDLayoutConstants`.
 
